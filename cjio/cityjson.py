@@ -214,8 +214,12 @@ class CityJSON:
     def __init__(self, file=None, j=None, ignore_duplicate_keys=False):
         if file is not None:
             self.read(file, ignore_duplicate_keys)
-            self.path = os.path.abspath(file.name)
-            self.reference_date = datetime.fromtimestamp(os.path.getmtime(file.name)).strftime('%Y-%m-%d')
+            if hasattr(file, 'name'):
+                self.path = os.path.abspath(file.name)
+                self.reference_date = datetime.fromtimestamp(os.path.getmtime(file.name)).strftime('%Y-%m-%d')
+            else:
+                self.path = None
+                self.reference_date = datetime.now().strftime('%Y-%m-%d')
             self.cityobjects = {}
         elif j is not None:
             self.j = j
